@@ -33,7 +33,7 @@ class ImageGallery extends Component {
   fetchPhotoOnSearchQuery = (query, page) => {
     const { toggleButtonShown, toggleLoader } = this;
     fetchPhotos(query, page).then(data => {
-      this.setState({ images: data.hits, page: 1 });
+      this.setState({ images: data.hits });
       toggleButtonShown(data);
       toggleLoader();
     });
@@ -55,6 +55,7 @@ class ImageGallery extends Component {
   };
   async componentDidUpdate(prevProps, prevState) {
     if (prevProps.query !== this.props.query) {
+      await this.setState({ page: 1 });
       await this.fetchPhotoOnSearchQuery(this.props.query, this.state.page);
       await this.toggleLoader();
       return;
